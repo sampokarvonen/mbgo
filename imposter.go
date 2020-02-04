@@ -385,6 +385,50 @@ func (r TCPResponse) toDTO() tcpResponseDTO {
 	}
 }
 
+type ProxyResponse struct {
+	To                  string
+	PredicateGenerators map[string]string
+	Mode                string
+	AddWaitBehavior     bool
+	AddDecorateBehavior string
+	Cert                string
+	Key                 string
+	Ciphers             string
+	SecureProtocol      string
+	PassPhrase          string
+	InjectHeaders       map[string]string
+}
+
+type proxyResponseDTO struct {
+	To                  string            `json:"to"`
+	PredicateGenerators map[string]string `json:"predicateGenerators,omitempty"`
+	Mode                string            `json:"mode,omitempty"`
+	AddWaitBehavior     bool              `json:"addWaitBehavior,omitempty"`
+	AddDecorateBehavior string            `json:"addDecorateBehavior,omitempty"`
+	Cert                string            `json:"cert,omitempty"`
+	Key                 string            `json:"key,omitempty"`
+	Ciphers             string            `json:"ciphers,omitempty"`
+	SecureProtocol      string            `json:"secureProtocol,omitempty"`
+	PassPhrase          string            `json:"passphrase,omitempty"`
+	InjectHeaders       map[string]string `json:"injectHeaders,omitempty"`
+}
+
+func (r ProxyResponse) toDTO() proxyResponseDTO {
+	return proxyResponseDTO{
+		To:                  r.To,
+		PredicateGenerators: r.PredicateGenerators,
+		Mode:                r.Mode,
+		AddWaitBehavior:     r.AddWaitBehavior,
+		AddDecorateBehavior: r.AddDecorateBehavior,
+		Cert:                r.Cert,
+		Key:                 r.Key,
+		Ciphers:             r.Ciphers,
+		SecureProtocol:      r.SecureProtocol,
+		PassPhrase:          r.PassPhrase,
+		InjectHeaders:       r.InjectHeaders,
+	}
+}
+
 // Response defines a networked response sent by a Stub whenever an
 // incoming Request matches one of its Predicates. Each Response is
 // has a Type field that defines its behaviour. Its currently supported
@@ -424,6 +468,10 @@ func getResponseSubTypeDTO(v interface{}) (interface{}, error) {
 	case TCPResponse:
 		v = typ.toDTO()
 	case *TCPResponse:
+		v = typ.toDTO()
+	case ProxyResponse:
+		v = typ.toDTO()
+	case *ProxyResponse:
 		v = typ.toDTO()
 	default:
 		return nil, errors.New("invalid response type")
