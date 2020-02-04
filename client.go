@@ -16,7 +16,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/senseyeio/mbgo/internal/rest"
+	"github.com/sampokarvonen/mbgo/internal/rest"
 )
 
 // Client represents a native client to the mountebank REST API.
